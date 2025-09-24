@@ -1,4 +1,4 @@
-﻿@inject Kargo_İlan.Data.KargoDbContext _context
+@inject Kargo_İlan.Data.KargoDbContext _context
 
 @{
     var userName = User.Identity?.Name;
@@ -41,7 +41,7 @@
                 
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                <i class="fas fa-home me-1"></i>Ana Sayfa
+                                <i class="bi bi-house me-1"></i>Ana Sayfa
                             </a>
                         </li>
 
@@ -81,7 +81,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link" asp-controller="Account" asp-action="Profile">
-                            <i class="fas fa-user-circle me-1"></i> Profilim
+                            <i class="bi bi-person-circle me-1"></i> Profilim
                         </a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
@@ -90,7 +90,7 @@
                         <form asp-controller="Account" asp-action="Logout" id="logoutForm" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="nav-link btn btn-link">
-                                    <i class="fas fa-sign-out-alt me-1"></i>Çıkış Yap
+                                    <i class="bi bi-box-arrow-right me-1"></i>Çıkış Yap
                                 </button>
                             </form>
 

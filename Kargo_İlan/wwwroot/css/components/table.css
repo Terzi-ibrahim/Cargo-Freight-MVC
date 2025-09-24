@@ -1,0 +1,9 @@
+/* Table Component */
+.table > :not(caption) > * > * { padding: 1rem 1.25rem; }
+.table tbody tr { transition: var(--transition-base); border-bottom: 1px solid var(--border-color); }
+.table tbody tr:hover { background-color: var(--gray-100); transform: translateY(-1px); }
+.table-responsive { border-radius: var(--border-radius-md); overflow: hidden; }
+
+@media (max-width: 576px) {
+    .table { font-size: 0.9rem; }
+}

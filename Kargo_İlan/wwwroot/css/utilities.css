@@ -1,0 +1,33 @@
+/* Utilities - small, composable classes */
+
+/* Spacing (margin/padding) */
+.mt-6 { margin-top: 3.5rem !important; }
+.mb-6 { margin-bottom: 3.5rem !important; }
+.pt-6 { padding-top: 3.5rem !important; }
+.pb-6 { padding-bottom: 3.5rem !important; }
+
+/* Text */
+.text-muted-700 { color: var(--gray-700) !important; }
+.text-muted-600 { color: var(--gray-600) !important; }
+
+/* Radius */
+.rounded-sm { border-radius: var(--border-radius-sm) !important; }
+.rounded-md { border-radius: var(--border-radius-md) !important; }
+.rounded-lg { border-radius: var(--border-radius-lg) !important; }
+
+/* Shadows */
+.shadow-sm-soft { box-shadow: var(--shadow-sm) !important; }
+.shadow-md-soft { box-shadow: var(--shadow-md) !important; }
+.shadow-lg-soft { box-shadow: var(--shadow-lg) !important; }
+
+/* Display helpers */
+.d-grid { display: grid !important; }
+.grid-gap-2 { gap: .5rem !important; }
+.grid-gap-3 { gap: 1rem !important; }
+
+/* Text truncation */
+.truncate { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* Z-index */
+.z-10 { z-index: 10; }
+.z-1000 { z-index: 1000; }

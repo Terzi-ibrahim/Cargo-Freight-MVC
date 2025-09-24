@@ -1,0 +1,31 @@
+/* Navbar Component */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--primary-color) !important;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .dropdown-item,
+.navbar-toggler {
+    color: var(--white) !important;
+}
+
+.navbar .dropdown-menu {
+    background-color: var(--gray-800);
+    border-radius: var(--border-radius-md);
+}
+
+.navbar .dropdown-item:hover {
+    background-color: var(--gray-700);
+    color: var(--white) !important;
+}
+
+.navbar-toggler svg {
+    fill: var(--white);
+}

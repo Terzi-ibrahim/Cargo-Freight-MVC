@@ -1,4 +1,4 @@
-﻿using Kargo_İlan.DTOs.Freight;
+using Kargo_İlan.DTOs.Freight;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -36,6 +36,7 @@ namespace Kargo_İlan.Controllers
             int? vehicleId,
             int? categoryId,
             int? cargoid,
+            string sort,
             int page = 1)
         {
             int pageSize = 20;
@@ -49,6 +50,26 @@ namespace Kargo_İlan.Controllers
             else
             {
                 allFreights = await _freightService.GetAllFreightsAsync();
+            }
+
+            // Sıralama uygula
+            switch ((sort ?? "recommended").ToLowerInvariant())
+            {
+                case "newest":
+                    allFreights = allFreights
+                        .OrderByDescending(f => f.OlusturulmaTarihi)
+                        .ToList();
+                    break;
+                case "oldest":
+                    allFreights = allFreights
+                        .OrderBy(f => f.OlusturulmaTarihi)
+                        .ToList();
+                    break;
+                default: // recommended: şimdilik en yeni gibi davran
+                    allFreights = allFreights
+                        .OrderByDescending(f => f.OlusturulmaTarihi)
+                        .ToList();
+                    break;
             }
 
             int totalItems = allFreights.Count;
@@ -67,8 +88,10 @@ namespace Kargo_İlan.Controllers
             ViewBag.UserOffers = userOffers;
             ViewBag.AcceptedOffers = acceptedOffers;
 
-            // ViewBag'e filtre verileri
-            ViewBag.Provinces = filterOptions.Provinces;
+            // ViewBag'e filtre verileri (İller A-Z)
+            ViewBag.Provinces = filterOptions.Provinces
+                .OrderBy(p => p.ProvinceName)
+                .ToList();
             ViewBag.Vehicles = filterOptions.Vehicles;
             ViewBag.Categories = filterOptions.Categories;
             ViewBag.CargoType = filterOptions.CargoType;
@@ -90,6 +113,7 @@ namespace Kargo_İlan.Controllers
             ViewBag.SelectedVehicleId = vehicleId;
             ViewBag.SelectedCategoryId = categoryId;
             ViewBag.SelectedCargoid = cargoid;
+            ViewBag.Sort = string.IsNullOrWhiteSpace(sort) ? "recommended" : sort;
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;

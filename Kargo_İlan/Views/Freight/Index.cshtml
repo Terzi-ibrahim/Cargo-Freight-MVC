@@ -1,136 +1,115 @@
-﻿@model List<Kargo_İlan.DTOs.Freight.FreightIndexDto>
+@model List<Kargo_İlan.DTOs.Freight.FreightIndexDto>
 
 @{
     ViewData["Title"] = "İlanlar";
 }
 
-<div class="container-fluid py-4">
+@section Styles {
+    <link href="~/css/pages/freight.css" rel="stylesheet" />
+}
+
+<div class="container-fluid py-4 freight-page">
     <div class="row g-4">
         <!-- Sidebar Filters -->
-        <div class="col-lg-3">
-            <div class="card border-0 shadow-sm h-100 rounded-4">
-                <div class="card-header bg-primary text-white border-bottom py-3">
-                    <h5 class="card-title mb-0 d-flex align-items-center">
-                        <i class="bi bi-funnel me-2"></i>
-                        Filtreler
-                    </h5>
-                </div>
-                <div class="card-body p-3 pb-4">
-                    <form id="filterForm" method="get" asp-action="Index" class="d-flex flex-column gap-3">
-                        <!-- Arama -->
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1">İlan No / Başlık</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0">
-                                    <i class="bi bi-search text-primary"></i>
-                                </span>
-                                <input type="text" id="searchText" name="searchText" class="form-control border-start-0 ps-0"
-                                       value="@ViewBag.SelectedSearchText" placeholder="Ara...">
+        <div class="d-none">
+            <div class="card border-0 shadow-sm h-100 rounded-4 filters-card">
+                <div class="card-body p-0 pb-2">
+                    <form id="filterForm" method="get" asp-action="Index">
+                        <div class="accordion" id="filtersAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hSearch">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cSearch" aria-expanded="false" aria-controls="cSearch">Arama</button>
+                                </h2>
+                                <div id="cSearch" class="accordion-collapse collapse" aria-labelledby="hSearch" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-primary"></i></span>
+                                            <input type="text" name="searchText" class="form-control border-start-0 ps-0" value="@ViewBag.SelectedSearchText" placeholder="Ara..." />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hLoad">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cLoad" aria-expanded="true" aria-controls="cLoad">Yükleme Adresi</button>
+                                </h2>
+                                <div id="cLoad" class="accordion-collapse collapse show" aria-labelledby="hLoad" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <select id="ilFilter" name="yukilId" class="form-select mb-2">
+                                            <option value="">İl Seçin</option>
+                                            @foreach (var il in ViewBag.Provinces) { <option value="@il.Province_id">@il.ProvinceName</option> }
+                                        </select>
+                                        <select id="ilceFilter" name="yukilceId" class="form-select">
+                                            <option value="">İlçe Seçin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hDest">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cDest" aria-expanded="false" aria-controls="cDest">Varış Adresi</button>
+                                </h2>
+                                <div id="cDest" class="accordion-collapse collapse" aria-labelledby="hDest" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <select id="varisilFilter" name="varisilId" class="form-select mb-2">
+                                            <option value="">İl Seçin</option>
+                                            @foreach (var il in ViewBag.Provinces) { <option value="@il.Province_id">@il.ProvinceName</option> }
+                                        </select>
+                                        <select id="varisilceFilter" name="varisilceId" class="form-select">
+                                            <option value="">İlçe Seçin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hVehicle">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cVehicle" aria-expanded="false" aria-controls="cVehicle">Araç Türü</button>
+                                </h2>
+                                <div id="cVehicle" class="accordion-collapse collapse" aria-labelledby="hVehicle" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <select id="vehicleFilter" name="vehicleId" class="form-select">
+                                            <option value="">Tümü</option>
+                                            @foreach (var vehicle in ViewBag.Vehicles) { <option value="@vehicle.VehicleType_id">@vehicle.VehicleName</option> }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hCategory">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cCategory" aria-expanded="false" aria-controls="cCategory">Kategori</button>
+                                </h2>
+                                <div id="cCategory" class="accordion-collapse collapse" aria-labelledby="hCategory" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <select id="categoryFilter" name="categoryId" class="form-select">
+                                            <option value="">Tümü</option>
+                                            @foreach (var category in ViewBag.Categories) { <option value="@category.Category_id">@category.CategoryName</option> }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="hCargo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cCargo" aria-expanded="false" aria-controls="cCargo">Kargo Türü</button>
+                                </h2>
+                                <div id="cCargo" class="accordion-collapse collapse" aria-labelledby="hCargo" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <select id="cargotypeFilter" name="cargoid" class="form-select">
+                                            <option value="">Tümü</option>
+                                            @foreach (var ct in ViewBag.CargoType) { <option value="@ct.CargoType_id">@ct.CargoName</option> }
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Yükleme Adresi -->
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1 d-flex align-items-center">
-                                <i class="bi bi-geo-alt text-primary me-2"></i>Yükleme Adresi
-                            </label>
-                            <div class="row g-2">
-                                <div class="col-12">
-                                    <select id="ilFilter" name="yukilId" class="form-select">
-                                        <option value="">İl Seçin</option>
-                                        @foreach (var il in ViewBag.Provinces)
-                                        {
-                                            <option value="@il.Province_id">@il.ProvinceName</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <select id="ilceFilter" name="yukilceId" class="form-select">
-                                        <option value="">İlçe Seçin</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Varış Adresi -->
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1 d-flex align-items-center">
-                                <i class="bi bi-geo-alt-fill text-primary me-2"></i>Varış Adresi
-                            </label>
-                            <div class="row g-2">
-                                <div class="col-12">
-                                    <select id="varisilFilter" name="varisilId" class="form-select">
-                                        <option value="">İl Seçin</option>
-                                        @foreach (var il in ViewBag.Provinces)
-                                        {
-                                            <option value="@il.Province_id">@il.ProvinceName</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <select id="varisilceFilter" name="varisilceId" class="form-select">
-                                        <option value="">İlçe Seçin</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                      
-
-
-                        <!-- Diğer Filtreler -->
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1 d-flex align-items-center">
-                                <i class="bi bi-truck text-primary me-2"></i>
-                                Araç Türü
-                            </label>
-                            <select id="vehicleFilter" name="vehicleId" class="form-select">
-                                <option value="">Tümü</option>
-                                @foreach (var vehicle in ViewBag.Vehicles)
-                                {
-                                    <option value="@vehicle.VehicleType_id">@vehicle.VehicleName</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1 d-flex align-items-center">
-                                <i class="bi bi-tag text-primary me-2"></i>
-                                Kategori
-                            </label>
-                            <select id="categoryFilter" name="categoryId" class="form-select">
-                                <option value="">Tümü</option>
-                                @foreach (var category in ViewBag.Categories)
-                                {
-                                    <option value="@category.Category_id">@category.CategoryName</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="form-label small text-muted mb-1 d-flex align-items-center">
-                                <i class="bi bi-box-seam text-primary me-2"></i>
-                                Kargo Türü
-                            </label>
-                            <select id="cargotypeFilter" name="cargoid" class="form-select">
-                                <option value="">Tümü</option>
-                                @foreach (var category in ViewBag.CargoType)
-                                {
-                                    <option value="@category.CargoType_id">@category.CargoName</option>
-                                }
-                            </select>
-                        </div>
-
-                        <!-- Butonlar -->
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-funnel me-2"></i>Filtrele
-                            </button>
-                            <button type="button" id="resetFilters" class="btn btn-outline-primary">
-                                <i class="bi bi-arrow-counterclockwise me-2"></i>Sıfırla
-                            </button>
+                        <div class="p-3 pt-2 d-grid gap-2">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-2"></i>Filtrele</button>
+                            <button type="button" id="resetFilters" class="btn btn-outline-primary"><i class="bi bi-arrow-counterclockwise me-2"></i>Sıfırla</button>
                         </div>
                     </form>
                 </div>
@@ -138,7 +117,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="col-lg-9">
+        <div class="col-12">
             <!-- Header Section -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
@@ -147,13 +126,239 @@
                     </h2>
                     <p class="text-muted small mb-0">Toplam @Model.Count ilan</p>
                 </div>
-                <a href="@Url.Action("FreightCreate", "Freight", new { returnUrl = "Freight" })" class="btn btn-primary px-4">
-                    <i class="bi bi-plus-lg me-2"></i>Yeni İlan
-                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
+                        <i class="bi bi-funnel"></i> Filtreler
+                    </button>
+                    <div class="btn-group" role="group" aria-label="Görünüm">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnTable"><i class="bi bi-list"></i> Tablo</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnGrid"><i class="bi bi-grid"></i> Kart</button>
+                    </div>
+                    <a href="@Url.Action("FreightCreate", "Freight", new { returnUrl = "Freight" })" class="btn btn-primary px-3">
+                        <i class="bi bi-plus-lg"></i>
+                    </a>
+                </div>
 
             </div>
 
-            <div class="card border-0 shadow-sm rounded-4">
+            <!-- Top Search (compact) -->
+            <form method="get" asp-action="Index" class="top-search sticky-search">
+                <!-- 1. Satır: Ortalanmış arama inputu + buton -->
+                <div class="row g-2 align-items-center justify-content-center mb-2">
+                    <div class="col-12 col-lg-6">
+                        <div class="search-pill d-flex align-items-center gap-2">
+                            <i class="bi bi-search text-primary ms-1"></i>
+                            <input type="text" name="searchText" class="form-control" value="@ViewBag.SelectedSearchText" placeholder="İlan no veya başlık ile ara">
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <input type="hidden" name="sort" value="@ViewBag.Sort" />
+                        <button type="submit" class="btn btn-primary btn-search-main"><i class="bi bi-search me-1"></i> Ara</button>
+                    </div>
+                </div>
+                <!-- 2. Satır: Tüm seçimler alt satırda -->
+                <div class="row g-2 align-items-center justify-content-center d-none d-lg-flex">
+                    <div class="col-lg-2">
+                        <select name="yukilId" class="form-select">
+                            <option value="">Yükleme İl</option>
+                            @{ var selIlTop = ViewBag.SelectedIlId?.ToString() ?? ""; }
+                            @foreach (var il in ViewBag.Provinces) {
+                                if (selIlTop == il.Province_id.ToString()) {
+                                    <option value="@il.Province_id" selected>@il.ProvinceName</option>
+                                } else {
+                                    <option value="@il.Province_id">@il.ProvinceName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select name="varisilId" class="form-select">
+                            <option value="">Varış İl</option>
+                            @{ var selVarisIlTop = ViewBag.SelectedVarisIlId?.ToString() ?? ""; }
+                            @foreach (var il in ViewBag.Provinces) {
+                                if (selVarisIlTop == il.Province_id.ToString()) {
+                                    <option value="@il.Province_id" selected>@il.ProvinceName</option>
+                                } else {
+                                    <option value="@il.Province_id">@il.ProvinceName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select name="vehicleId" class="form-select">
+                            <option value="">Araç Türü</option>
+                            @{ var selVehicleTop = ViewBag.SelectedVehicleId?.ToString() ?? ""; }
+                            @foreach (var v in ViewBag.Vehicles) {
+                                if (selVehicleTop == v.VehicleType_id.ToString()) {
+                                    <option value="@v.VehicleType_id" selected>@v.VehicleName</option>
+                                } else {
+                                    <option value="@v.VehicleType_id">@v.VehicleName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select name="categoryId" class="form-select">
+                            <option value="">Kategori</option>
+                            @{ var selCategoryTop = ViewBag.SelectedCategoryId?.ToString() ?? ""; }
+                            @foreach (var c in ViewBag.Categories) {
+                                if (selCategoryTop == c.Category_id.ToString()) {
+                                    <option value="@c.Category_id" selected>@c.CategoryName</option>
+                                } else {
+                                    <option value="@c.Category_id">@c.CategoryName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select name="cargoid" class="form-select">
+                            <option value="">Kargo Türü</option>
+                            @{ var selCargoTop = ViewBag.SelectedCargoid?.ToString() ?? ""; }
+                            @foreach (var ct in ViewBag.CargoType) {
+                                if (selCargoTop == ct.CargoType_id.ToString()) {
+                                    <option value="@ct.CargoType_id" selected>@ct.CargoName</option>
+                                } else {
+                                    <option value="@ct.CargoType_id">@ct.CargoName</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Aktif filtreler: kompakt ve yapışkan bar -->
+            @{ 
+                var selIlStr = ViewBag.SelectedIlId?.ToString() ?? "";
+                var selVarisIlStr = ViewBag.SelectedVarisIlId?.ToString() ?? "";
+                var selVehicleStr = ViewBag.SelectedVehicleId?.ToString() ?? "";
+                var selCategoryStr = ViewBag.SelectedCategoryId?.ToString() ?? "";
+                var selCargoStr = ViewBag.SelectedCargoid?.ToString() ?? "";
+                string yukIlName = null, varisIlName = null, vehicleName = null, categoryName = null, cargoName = null;
+                foreach (var il in ViewBag.Provinces) { if (selIlStr == il.Province_id.ToString()) { yukIlName = il.ProvinceName; break; } }
+                foreach (var il in ViewBag.Provinces) { if (selVarisIlStr == il.Province_id.ToString()) { varisIlName = il.ProvinceName; break; } }
+                foreach (var v in ViewBag.Vehicles) { if (selVehicleStr == v.VehicleType_id.ToString()) { vehicleName = v.VehicleName; break; } }
+                foreach (var c in ViewBag.Categories) { if (selCategoryStr == c.Category_id.ToString()) { categoryName = c.CategoryName; break; } }
+                foreach (var ct in ViewBag.CargoType) { if (selCargoStr == ct.CargoType_id.ToString()) { cargoName = ct.CargoName; break; } }
+            }
+            <div class="chipbar d-flex flex-wrap gap-2 mb-2">
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedSearchText)) {
+                    <span class="filter-chip"><i class="bi bi-search"></i> @ViewBag.SelectedSearchText
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedIlId?.ToString())) {
+                    <span class="filter-chip"><i class="bi bi-geo"></i> Yükleme İl: @(yukIlName ?? ViewBag.SelectedIlId)
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedIlceId?.ToString())) {
+                    <span class="filter-chip" data-chip="yukilce" data-id="@ViewBag.SelectedIlceId"><i class="bi bi-geo"></i> Yükleme İlçe: <span class="chip-name">@ViewBag.SelectedIlceId</span>
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedVarisIlId?.ToString())) {
+                    <span class="filter-chip"><i class="bi bi-geo"></i> Varış İl: @(varisIlName ?? ViewBag.SelectedVarisIlId)
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedVarisIlceId?.ToString())) {
+                    <span class="filter-chip" data-chip="varisilce" data-id="@ViewBag.SelectedVarisIlceId"><i class="bi bi-geo"></i> Varış İlçe: <span class="chip-name">@ViewBag.SelectedVarisIlceId</span>
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedVehicleId?.ToString())) {
+                    <span class="filter-chip"><i class="bi bi-truck"></i> Araç: @(vehicleName ?? ViewBag.SelectedVehicleId)
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedCategoryId?.ToString())) {
+                    <span class="filter-chip"><i class="bi bi-tag"></i> Kategori: @(categoryName ?? ViewBag.SelectedCategoryId)
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, cargoid = ViewBag.SelectedCargoid })">×</a>
+                    </span>
+                }
+                @if (!string.IsNullOrWhiteSpace(ViewBag.SelectedCargoid?.ToString())) {
+                    <span class="filter-chip"><i class="bi bi-box-seam"></i> Kargo: @(cargoName ?? ViewBag.SelectedCargoid)
+                        <a class="chip-close" href="@Url.Action("Index", new { page = ViewBag.CurrentPage, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId })">×</a>
+                    </span>
+                }
+            </div>
+
+            <!-- Toolbar: sonuç özeti + sıralama -->
+            <div class="listings-toolbar">
+                <div class="results-summary">
+                    <i class="bi bi-info-circle"></i>
+                    <span>Gösterilen:</span>
+                    <strong>@Model.Count</strong>
+                    <span>kayıt</span>
+                </div>
+                <form class="sort-box" id="sortForm" method="get">
+                    <i class="bi bi-arrow-down-up me-1"></i>
+                    <select class="form-select form-select-sm" name="sort" id="sortSelect" aria-label="Sırala">
+                        @{ var sortVal = ViewBag.Sort as string ?? "recommended"; }
+                        @if (sortVal == "recommended") {
+                            <option value="recommended" selected>Önerilen</option>
+                        } else {
+                            <option value="recommended">Önerilen</option>
+                        }
+                        @if (sortVal == "newest") {
+                            <option value="newest" selected>En yeni</option>
+                        } else {
+                            <option value="newest">En yeni</option>
+                        }
+                        @if (sortVal == "oldest") {
+                            <option value="oldest" selected>En eski</option>
+                        } else {
+                            <option value="oldest">En eski</option>
+                        }
+                    </select>
+                    <!-- mevcut parametreleri koru -->
+                    <input type="hidden" name="searchText" value="@ViewBag.SelectedSearchText" />
+                    <input type="hidden" name="yukilId" value="@ViewBag.SelectedIlId" />
+                    <input type="hidden" name="yukilceId" value="@ViewBag.SelectedIlceId" />
+                    <input type="hidden" name="varisilId" value="@ViewBag.SelectedVarisIlId" />
+                    <input type="hidden" name="varisilceId" value="@ViewBag.SelectedVarisIlceId" />
+                    <input type="hidden" name="vehicleId" value="@ViewBag.SelectedVehicleId" />
+                    <input type="hidden" name="categoryId" value="@ViewBag.SelectedCategoryId" />
+                    <input type="hidden" name="cargoid" value="@ViewBag.SelectedCargoid" />
+                </form>
+            </div>
+
+            <!-- GRID VIEW -->
+            <div id="gridView" class="d-none">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-2">
+                    @foreach (var freight in Model)
+                    {
+                        <div class="col">
+                            <div class="card h-100 position-relative">
+                                <div class="listing-thumb" style="background-image: url('https://images.unsplash.com/photo-1542044801-abc8f1bfb9ef?q=80&w=1200&auto=format&fit=crop');"></div>
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between mb-1">
+                                        <h5 class="listing-title mb-0 truncate">@freight.Title</h5>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">#@freight.Freight_id</span>
+                                    </div>
+                                    <div class="listing-metrics mb-2 d-flex align-items-center"><i class="bi bi-geo-alt me-2"></i>@freight.YuklemeIl.ProvinceName / @freight.Yuklemeilce.DistrictName</div>
+                                    <div class="listing-metrics mb-2 d-flex align-items-center"><i class="bi bi-geo-alt-fill me-2"></i>@freight.VarisIl.ProvinceName / @freight.Varisilce.DistrictName</div>
+                                    <div class="listing-tags d-flex flex-wrap gap-2 mb-3">
+                                        <span class="badge badge-soft-primary"><i class="bi bi-truck me-1"></i>@freight.VehicleType?.VehicleName</span>
+                                        <span class="badge badge-soft-green"><i class="bi bi-box-seam me-1"></i>@freight.CargoType?.CargoName</span>
+                                        <span class="badge badge-soft-orange"><i class="bi bi-tag me-1"></i>@freight.CategoryType.CategoryName</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted d-flex align-items-center"><i class="bi bi-calendar me-1"></i>@freight.OlusturulmaTarihi.ToString("dd.MM.yyyy")</small>
+                                        <div class="d-flex gap-2">
+                                            @await Html.PartialAsync("_OfferButtonPartial", freight.Freight_id)
+                                            <a asp-action="Detail" asp-route-id="@freight.Freight_id" class="btn btn-sm btn-outline-success">Detay</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- TABLE VIEW (default) -->
+            <div class="card border-0 shadow-sm rounded-4" id="tableView">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
@@ -165,8 +370,7 @@
                                     <th class="border-0 fw-medium text-muted">Varış</th>
                                     <th class="border-0 fw-medium text-muted">Araç Türü</th>
                                     <th class="border-0 fw-medium text-muted">Kargo Türü</th>
-                                    <th class="border-0 fw-medium text-muted">Kategori</th>
-                                    <th class="border-0 fw-medium text-muted">Oluşturma</th>
+                                                           
                                     <th class="border-0 text-end pe-4 fw-medium text-muted">İşlemler</th>
                                 </tr>
                             </thead>
@@ -236,28 +440,7 @@
                                                 <i class="bi bi-box-seam me-2"></i>
                                                 @freight.CargoType?.CargoName
                                             </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center text-muted">
-                                                <i class="bi bi-tag me-2"></i>
-                                                @freight.CategoryType.CategoryName
-                                            </div>
-                                        </td>
-                                        @{
-                                            var gunFarki = (DateTime.Now.Date - freight.OlusturulmaTarihi.Date).Days;
-                                            string tarihMetni = gunFarki switch
-                                            {
-                                                0 => "Bugün",
-                                                1 => "Dün",
-                                                _ => $"{gunFarki} gün önce"
-                                            };
-                                        }
-                                        <td>
-                                            <div class="d-flex align-items-center text-muted">
-                                                <i class="bi bi-calendar me-2"></i>
-                                                @tarihMetni
-                                            </div>
-                                        </td>
+                                        </td>                                    
 
                                         <td class="text-end pe-4">
                                             <div class="d-inline-flex align-items-center">
@@ -279,7 +462,7 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination justify-content-end mb-0">
                             <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                                <a class="page-link text-primary" href="@Url.Action("Index", new {page = ViewBag.CurrentPage - 1,searchText = ViewBag.SelectedSearchText,
+                                <a class="page-link text-primary" href="@Url.Action("Index", new {page = ViewBag.CurrentPage - 1, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText,
                                   yukilId = ViewBag.SelectedIlId,yukilceId = ViewBag.SelectedIlceId,varisilId = ViewBag.SelectedVarisIlId,
                                   varisilceId = ViewBag.SelectedVarisIlceId,vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId,
                                    cargoid = ViewBag.SelectedCargoid })" aria-label="Previous">
@@ -290,7 +473,7 @@
                             @for (int i = 1; i <= ViewBag.TotalPages; i++)
                             {
                                 <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                                    <a class="page-link @(i == ViewBag.CurrentPage ? "bg-primary border-primary" : "text-primary")" href="@Url.Action("Index", new {page = i,searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId,
+                                    <a class="page-link @(i == ViewBag.CurrentPage ? "bg-primary border-primary" : "text-primary")" href="@Url.Action("Index", new {page = i, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText, yukilId = ViewBag.SelectedIlId,
                                         yukilceId = ViewBag.SelectedIlceId,varisilId = ViewBag.SelectedVarisIlId, varisilceId = ViewBag.SelectedVarisIlceId,
                                        vehicleId = ViewBag.SelectedVehicleId,categoryId = ViewBag.SelectedCategoryId, cargoid = ViewBag.SelectedCargoid
                                         })">@i</a>
@@ -298,7 +481,7 @@
                             }
 
                             <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                                <a class="page-link text-primary" href="@Url.Action("Index", new {page = ViewBag.CurrentPage + 1, searchText = ViewBag.SelectedSearchText,
+                                <a class="page-link text-primary" href="@Url.Action("Index", new {page = ViewBag.CurrentPage + 1, sort = ViewBag.Sort, searchText = ViewBag.SelectedSearchText,
                                           yukilId = ViewBag.SelectedIlId, yukilceId = ViewBag.SelectedIlceId, varisilId = ViewBag.SelectedVarisIlId,
                                          varisilceId = ViewBag.SelectedVarisIlceId, vehicleId = ViewBag.SelectedVehicleId, categoryId = ViewBag.SelectedCategoryId,
                                          cargoid = ViewBag.SelectedCargoid})" aria-label="Next">
@@ -313,10 +496,169 @@
     </div>
 </div>
 
-
+<!-- Offcanvas Filters (Mobile) -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filtreler</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+      <form id="filterFormMobile" method="get" asp-action="Index" class="d-flex flex-column gap-3">
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1">İlan No / Başlık</label>
+              <div class="input-group">
+                  <span class="input-group-text bg-light border-end-0">
+                      <i class="bi bi-search text-primary"></i>
+                  </span>
+                  <input type="text" name="searchText" class="form-control border-start-0 ps-0" value="@ViewBag.SelectedSearchText" placeholder="Ara...">
+              </div>
+          </div>
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1 d-flex align-items-center"><i class="bi bi-geo-alt text-primary me-2"></i>Yükleme Adresi</label>
+              <select name="yukilId" class="form-select">
+                  <option value="">İl Seçin</option>
+                  @{ var selIlMob = ViewBag.SelectedIlId?.ToString() ?? ""; }
+                  @foreach (var il in ViewBag.Provinces) {
+                      if (selIlMob == il.Province_id.ToString()) {
+                          <option value="@il.Province_id" selected>@il.ProvinceName</option>
+                      } else {
+                          <option value="@il.Province_id">@il.ProvinceName</option>
+                      }
+                  }
+              </select>
+              <select name="yukilceId" class="form-select mt-2">
+                  <option value="">İlçe Seçin</option>
+              </select>
+          </div>
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1 d-flex align-items-center"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Varış Adresi</label>
+              <select name="varisilId" class="form-select">
+                  <option value="">İl Seçin</option>
+                  @{ var selVarisIlMob = ViewBag.SelectedVarisIlId?.ToString() ?? ""; }
+                  @foreach (var il in ViewBag.Provinces) {
+                      if (selVarisIlMob == il.Province_id.ToString()) {
+                          <option value="@il.Province_id" selected>@il.ProvinceName</option>
+                      } else {
+                          <option value="@il.Province_id">@il.ProvinceName</option>
+                      }
+                  }
+              </select>
+              <select name="varisilceId" class="form-select mt-2">
+                  <option value="">İlçe Seçin</option>
+              </select>
+          </div>
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1 d-flex align-items-center"><i class="bi bi-truck text-primary me-2"></i>Araç Türü</label>
+              <select name="vehicleId" class="form-select">
+                  <option value="">Tümü</option>
+                  @{ var selVehicleMob = ViewBag.SelectedVehicleId?.ToString() ?? ""; }
+                  @foreach (var v in ViewBag.Vehicles) {
+                      if (selVehicleMob == v.VehicleType_id.ToString()) {
+                          <option value="@v.VehicleType_id" selected>@v.VehicleName</option>
+                      } else {
+                          <option value="@v.VehicleType_id">@v.VehicleName</option>
+                      }
+                  }
+              </select>
+          </div>
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1 d-flex align-items-center"><i class="bi bi-tag text-primary me-2"></i>Kategori</label>
+              <select name="categoryId" class="form-select">
+                  <option value="">Tümü</option>
+                  @{ var selCategoryMob = ViewBag.SelectedCategoryId?.ToString() ?? ""; }
+                  @foreach (var c in ViewBag.Categories) {
+                      if (selCategoryMob == c.Category_id.ToString()) {
+                          <option value="@c.Category_id" selected>@c.CategoryName</option>
+                      } else {
+                          <option value="@c.Category_id">@c.CategoryName</option>
+                      }
+                  }
+              </select>
+          </div>
+          <div class="form-group mb-3">
+              <label class="form-label small text-muted mb-1 d-flex align-items-center"><i class="bi bi-box-seam text-primary me-2"></i>Kargo Türü</label>
+              <select name="cargoid" class="form-select">
+                  <option value="">Tümü</option>
+                  @{ var selCargoMob = ViewBag.SelectedCargoid?.ToString() ?? ""; }
+                  @foreach (var ct in ViewBag.CargoType) {
+                      if (selCargoMob == ct.CargoType_id.ToString()) {
+                          <option value="@ct.CargoType_id" selected>@ct.CargoName</option>
+                      } else {
+                          <option value="@ct.CargoType_id">@ct.CargoName</option>
+                      }
+                  }
+              </select>
+          </div>
+          <div class="d-grid gap-2">
+              <input type="hidden" name="sort" value="@ViewBag.Sort" />
+              <button type="submit" class="btn btn-primary"><i class="bi bi-funnel me-2"></i>Filtrele</button>
+              <button type="button" id="resetFiltersMobile" class="btn btn-outline-primary"><i class="bi bi-arrow-counterclockwise me-2"></i>Sıfırla</button>
+          </div>
+      </form>
+  </div>
+</div>
 
 @section Scripts {
-   
+    <script>
+        (function() {
+            const table = document.getElementById('tableView');
+            const grid = document.getElementById('gridView');
+            const btnTable = document.getElementById('btnTable');
+            const btnGrid = document.getElementById('btnGrid');
+
+            function setView(view) {
+                if (view === 'grid') {
+                    grid.classList.remove('d-none');
+                    table.classList.add('d-none');
+                    btnGrid.classList.add('active');
+                    btnTable.classList.remove('active');
+                } else {
+                    table.classList.remove('d-none');
+                    grid.classList.add('d-none');
+                    btnTable.classList.add('active');
+                    btnGrid.classList.remove('active');
+                }
+                try { localStorage.setItem('freightView', view); } catch(e) {}
+            }
+
+            btnTable && btnTable.addEventListener('click', () => setView('table'));
+            btnGrid && btnGrid.addEventListener('click', () => setView('grid'));
+
+            const saved = (function(){ try { return localStorage.getItem('freightView'); } catch(e) { return null; }})();
+            setView(saved ? saved : 'grid');
+
+            // sorting
+            const sortSelect = document.getElementById('sortSelect');
+            const sortForm = document.getElementById('sortForm');
+            sortSelect && sortSelect.addEventListener('change', () => sortForm.submit());
+
+            // reset filters mobile
+            const resetBtn = document.getElementById('resetFilters');
+            const resetBtnMobile = document.getElementById('resetFiltersMobile');
+            function goReset() {
+                window.location.href = '@Url.Action("Index", new { page = 1 })';
+            }
+            resetBtn && resetBtn.addEventListener('click', goReset);
+            resetBtnMobile && resetBtnMobile.addEventListener('click', goReset);
+
+            // resolve district IDs to names in chips
+            try {
+                const districtsScript = document.getElementById('districts-data');
+                if (districtsScript) {
+                    const data = JSON.parse(districtsScript.textContent || '{}');
+                    const idToName = {};
+                    Object.keys(data).forEach(k => {
+                        (data[k] || []).forEach(d => { idToName[d.Id] = d.Name; });
+                    });
+                    document.querySelectorAll('.filter-chip[data-chip][data-id] .chip-name')
+                        .forEach(span => {
+                            const id = span.closest('.filter-chip').getAttribute('data-id');
+                            if (id && idToName[id]) span.textContent = idToName[id];
+                        });
+                }
+            } catch(e) { /* noop */ }
+        })();
+    </script>
     <script id="districts-data" type="application/json">
         @Html.Raw(ViewBag.DistrictsJson)
     </script>
@@ -325,4 +667,3 @@
     <script src="~/js/freight/filterpersist.js" asp-append-version="true"></script>
   
 }
-

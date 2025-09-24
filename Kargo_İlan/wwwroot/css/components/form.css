@@ -1,0 +1,34 @@
+/* Form Component */
+.input-group { background: rgba(255, 255, 255, 0.98); border-radius: var(--border-radius-md); overflow: hidden; flex: 1; min-width: 200px; transition: var(--transition-base); border: 2px solid transparent; }
+.input-group:hover { background: white; transform: translateY(-2px); }
+.input-group:focus-within { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); background: white; }
+.input-group-text { background: none; border: none; color: #333; padding: 0.875rem 1.25rem; font-size: 1.1rem; transition: var(--transition-base); }
+.input-group .form-control { border: none; padding: 0.875rem 1.25rem; font-size: 1rem; font-weight: 500; color: #333; transition: var(--transition-base); background: transparent; }
+.input-group .form-control::placeholder { color: #666; opacity: 0.8; font-weight: 400; }
+.input-group .form-control:focus { box-shadow: none; }
+
+/* Modern search */
+.modern-search-box { background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(20px); border-radius: var(--border-radius-lg); padding: 1.5rem 2rem; box-shadow: var(--shadow-lg); border: 1px solid rgba(255, 255, 255, 0.3); max-width: 960px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between; }
+.input-wrapper { position: relative; flex: 1 1 400px; }
+.search-icon { position: absolute; top: 50%; left: 1rem; transform: translateY(-50%); color: var(--gray-600); font-size: 1rem; }
+.modern-input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: var(--border-radius-md); border: 1px solid var(--gray-400); background-color: rgba(255, 255, 255, 0.9); transition: var(--transition-base); font-size: 1rem; }
+.modern-input:focus-visible { border-color: var(--secondary-color); box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25); outline: none; }
+.modern-select { width: 220px; padding: 0.75rem 1rem; border-radius: var(--border-radius-md); border: 1px solid var(--gray-400); background-color: rgba(255, 255, 255, 0.9); font-size: 1rem; transition: var(--transition-base); }
+.modern-select:focus-visible { border-color: var(--secondary-color); box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25); outline: none; }
+.modern-search-btn { padding: 0.75rem 1.5rem; border-radius: var(--border-radius-md); background: linear-gradient(135deg, var(--secondary-color), #5a8dee); color: var(--white); font-weight: 600; border: none; transition: var(--transition-base); }
+.modern-search-btn:hover { background: linear-gradient(135deg, #0b5ed7, #4c7edc); transform: translateY(-2px); }
+
+/* form-floating small */
+.form-floating-sm > .form-control,
+.form-floating-sm > .form-select { height: calc(2.5rem + 2px); line-height: 1.25; font-size: 0.875rem; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); transition: var(--transition-base); }
+.form-floating-sm > .form-control:focus,
+.form-floating-sm > .form-select:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15); }
+.form-floating-sm > label { padding: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--gray-600); }
+.form-floating-sm > .form-control:focus ~ label,
+.form-floating-sm > .form-control:not(:placeholder-shown) ~ label,
+.form-floating-sm > .form-select ~ label { transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem); color: var(--secondary-color); }
+
+@media (max-width: 768px) {
+  .modern-search-box { flex-direction: column; align-items: stretch; gap: 0.75rem; padding: 1rem 1.25rem; }
+  .modern-select, .modern-search-btn, .input-group { width: 100%; min-width: 100%; }
+}

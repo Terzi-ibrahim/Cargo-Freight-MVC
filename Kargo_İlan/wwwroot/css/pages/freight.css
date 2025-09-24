@@ -1,0 +1,159 @@
+/* Freight Listings Page (Sahibinden tarzı modern görünüm) */
+
+/* Layout */
+.freight-page {
+    --gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.filters-card .card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+/* Toolbar */
+.listings-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .listings-toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+.results-summary {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--gray-700);
+}
+.results-summary strong { color: var(--primary-color); }
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .6rem;
+    background: var(--gray-100);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: .85rem;
+    color: var(--gray-700);
+}
+.filter-chip i { color: var(--secondary-color); }
+.filter-chip .chip-close { color: var(--gray-600); text-decoration: none; }
+.filter-chip .chip-close:hover { color: var(--accent-color); }
+
+/* Sort box */
+.sort-box {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* Table tweaks */
+.table thead th { white-space: nowrap; }
+.table tbody td { vertical-align: middle; }
+
+/* Sidebar */
+.filters-card .form-label { font-weight: 600; }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .filters-card { position: sticky; top: 70px; }
+}
+
+@media (max-width: 576px) {
+    .results-summary { font-size: .95rem; }
+    .sort-box select { font-size: .95rem; }
+}
+
+/* Top Search Bar */
+.top-search {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: .75rem;
+    margin-bottom: 1rem;
+}
+.sticky-search {
+    position: sticky;
+    top: 70px; /* navbar yüksekliği + boşluk */
+    z-index: 1020; /* navbar'ın altında kalsın */
+    box-shadow: var(--shadow-md);
+}
+.top-search .search-pill {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: .5rem .75rem;
+    background: var(--gray-100);
+}
+.top-search .form-select,
+.top-search .form-control { border: none; background: transparent; }
+.top-search .btn-search-main { border-radius: 999px; padding: .6rem 1.25rem; }
+
+/* Accordion filters */
+.filters-card .accordion-button { font-weight: 600; }
+.filters-card .accordion-item { border: none; border-bottom: 1px solid var(--border-color); }
+.filters-card .accordion-button:not(.collapsed) { color: var(--primary-color); background-color: var(--gray-100); }
+
+/* Grid cards */
+#gridView .card { transition: transform .2s ease, box-shadow .2s ease; }
+#gridView .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.listing-thumb {
+    height: 90px;
+    background-size: cover;
+    background-position: center;
+    border-top-left-radius: var(--border-radius-md);
+    border-top-right-radius: var(--border-radius-md);
+}
+.card .card-body { padding: .75rem .875rem; }
+.listing-title { font-weight: 600; font-size: .95rem; }
+.listing-metrics { color: var(--gray-600); font-size: .8rem; }
+.listing-tags { gap: .25rem; }
+.listing-tags .badge { border: 1px solid var(--border-color); background: var(--gray-100); font-weight: 500; font-size: .75rem; padding: .3rem .5rem; }
+
+/* Card details */
+.listing-title { font-weight: 600; }
+.listing-metrics { color: var(--gray-600); font-size: .9rem; }
+.listing-tags .badge { border: 1px solid var(--border-color); background: var(--gray-100); }
+.badge-soft-primary { color: var(--secondary-color); background: rgba(52,152,219,.12); border: 1px solid rgba(52,152,219,.25); }
+.badge-soft-green { color: #0a7d3b; background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25); }
+.badge-soft-orange { color: #b35c00; background: rgba(255,159,67,.15); border: 1px solid rgba(255,159,67,.25); }
+
+/* Favorite button */
+.fav-btn {
+    position: absolute;
+    right: .5rem;
+    top: .5rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,.9);
+    border: 1px solid var(--border-color);
+    color: var(--gray-700);
+}
+.fav-btn:hover { color: var(--accent-color); border-color: var(--accent-color); }
+
+/* Empty state */
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-700); }
+.empty-state .icon { font-size: 2rem; color: var(--secondary-color); display: inline-flex; width: 56px; height: 56px; border-radius: 999px; align-items: center; justify-content: center; background: rgba(52,152,219,.12); border: 1px solid rgba(52,152,219,.25); }
+.empty-state p { margin: .5rem 0 1rem; }
+
+/* Compact chip bar */
+.chipbar { position: sticky; top: 120px; z-index: 1010; }
+.chipbar .filter-chip { padding: .25rem .5rem; font-size: .8rem; background: var(--gray-100); border: 1px solid var(--border-color); }
+.chipbar .chip-close { margin-left: .25rem; font-weight: 700; }

@@ -1,4 +1,4 @@
-﻿@model List<Kargo_İlan.DTOs.UserNotificationPrefs.UserNotificationPrefDto>
+@model List<Kargo_İlan.DTOs.UserNotificationPrefs.UserNotificationPrefDto>
 
 <div class="container py-4">
 
@@ -12,7 +12,7 @@
             <p class="text-muted small mb-0">Yeni ilanlar için bildirim tercihlerinizi yönetin</p>
         </div>
         <a asp-action="CreateUserNotificationPref" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Yeni Tercih Ekle
+            <i class="bi bi-plus-lg me-2"></i>Yeni Tercih Ekle
         </a>
     </div>
 
@@ -37,7 +37,7 @@
                         </div>
                         <div class="d-flex gap-2">
                             <a asp-action="Edit" asp-route-id="@pref.Id" class="btn btn-sm btn-light">
-                                <i class="fas fa-edit"></i>
+                                <i class="bi bi-pencil-square"></i>
                             </a>
                             <form method="post" asp-action="ToggleNotificationPrefStatus" class="d-inline">
                                 <input type="hidden" name="id" value="@pref.Id" />
@@ -46,7 +46,7 @@
                                 </button>
                             </form>
                             <a asp-action="Delete" asp-route-id="@pref.Id" class="btn btn-sm btn-light text-danger">
-                                <i class="fas fa-trash"></i>
+                                <i class="bi bi-trash"></i>
                             </a>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                             {
                                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                                     <div class="d-flex align-items-center">
-                                        <i class="fas fa-bell text-primary me-2"></i>
+                                        <i class="bi bi-bell text-primary me-2"></i>
                                         <span>@n.Message</span>
                                     </div>
                                     <div class="d-flex align-items-center gap-2">
@@ -82,7 +82,7 @@
                     else
                     {
                         <div class="ms-4 text-muted small">
-                            <i class="fas fa-info-circle me-1"></i>
+                            <i class="bi bi-info-circle me-1"></i>
                             Bu tercih için bildirim bulunmuyor
                         </div>
                     }

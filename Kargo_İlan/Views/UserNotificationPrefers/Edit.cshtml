@@ -1,4 +1,4 @@
-﻿@model Kargo_İlan.DTOs.UserNotificationPrefs.UserNotificationPrefUpdateViewModel
+@model Kargo_İlan.DTOs.UserNotificationPrefs.UserNotificationPrefUpdateViewModel
 
 <div class="container py-4">
     <!-- Header -->
@@ -8,7 +8,7 @@
             <p class="text-muted small mb-0">Bildirim tercihinizi güncelleyin</p>
         </div>
         <a asp-action="Index" class="btn btn-light">
-            <i class="fas fa-arrow-left me-2"></i>Geri Dön
+            <i class="bi bi-arrow-left me-2"></i>Geri Dön
         </a>
     </div>
 
@@ -33,7 +33,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label fw-medium text-primary">
-                                <i class="fas fa-map-marker-alt me-2"></i>Yükleme Adresi
+                                <i class="bi bi-geo-alt me-2"></i>Yükleme Adresi
                             </label>
                             <select asp-for="UserNotificationPref.Yuklemeil_id" id="loadingCity"
                                     class="form-select" asp-items="ViewBag.Province">
@@ -55,7 +55,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label fw-medium text-primary">
-                                <i class="fas fa-map-marker-alt me-2"></i>Varış Adresi
+                                <i class="bi bi-geo-alt me-2"></i>Varış Adresi
                             </label>
                             <select asp-for="UserNotificationPref.Varisil_id" id="destinationCity"
                                     class="form-select" asp-items="ViewBag.Province">
@@ -87,10 +87,10 @@
                     <div class="col-12">
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Kaydet
+                                <i class="bi bi-save me-2"></i>Kaydet
                             </button>
                             <a asp-action="Index" class="btn btn-light">
-                                <i class="fas fa-times me-2"></i>İptal
+                                <i class="bi bi-x me-2"></i>İptal
                             </a>
                         </div>
                     </div>
